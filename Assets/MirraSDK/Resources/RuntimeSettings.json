@@ -1,0 +1,7 @@
+{
+    "platformName": "YandexGames",
+    "deploymentName": "Web",
+    "dataContainerTags": [
+        "json-data"
+    ]
+}
