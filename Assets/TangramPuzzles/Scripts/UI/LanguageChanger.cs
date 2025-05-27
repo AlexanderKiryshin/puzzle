@@ -16,13 +16,57 @@ public class LanguageChanger : MonoBehaviour
     [SerializeField] BundleScreen _bundleScreen;
     [SerializeField] TopBar _topBar;
     [SerializeField] LevelListScreen _levelListScreen;
-    private void Awake()
+    private void Start()
     {
-        while (!MirraSDK.IsInitialized)
-        {             
-            Debug.Log("Waiting for MirraSDK to initialize...");
-            System.Threading.Thread.Sleep(100);
-         }
+        if (!MirraSDK.IsInitialized)
+        {
+            StartCoroutine(ChangeLanguage());
+        }
+        else
+        {
+            switch (MirraSDK.Language.Current)
+            {
+                case LanguageType.English:
+                    _russianFlag.SetActive(false);
+                    _englishFlag.SetActive(true);
+                    _turkeyFlag.SetActive(false);
+                    _germanFlag.SetActive(false);
+                    break;
+                case LanguageType.Russian:
+                    _russianFlag.SetActive(true);
+                    _englishFlag.SetActive(false);
+                    _turkeyFlag.SetActive(false);
+                    _germanFlag.SetActive(false);
+                    break;
+                case LanguageType.Turkish:
+                    _russianFlag.SetActive(false);
+                    _englishFlag.SetActive(false);
+                    _turkeyFlag.SetActive(true);
+                    _germanFlag.SetActive(false);
+                    break;
+                case LanguageType.German:
+                    _russianFlag.SetActive(false);
+                    _englishFlag.SetActive(false);
+                    _turkeyFlag.SetActive(false);
+                    _germanFlag.SetActive(true);
+                    break;
+            }
+            switch (ScreenManager.Instance.CurrentScreenId)
+            {
+                case "bundles":
+                    _bundleScreen.UpdateUI(false);
+                    break;
+                case "pack_levels":
+                    _levelListScreen.UpdateList();
+                    break;
+            }
+            _topBar.UpdateHeaderName();
+        }
+    }
+
+    private IEnumerator ChangeLanguage()
+    {
+        yield return MirraSDK.IsInitialized;
         switch (MirraSDK.Language.Current)
         {
             case LanguageType.English:

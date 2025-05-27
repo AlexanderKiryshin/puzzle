@@ -32,13 +32,20 @@ namespace Assets._scripts
         private void Awake()
         {
             InitializeLocalizations();
+          
+        }
+        private void Start()
+        {
             if (MirraSDK.Data.HasKey("language"))
             {
                 MirraSDK.Language.Current = MirraSDK.Data.GetObject<LanguageType>("language");
+                _currentLanguage = MirraSDK.Language.Current;
             }
-
-            _currentLanguage = MirraSDK.Language.Current;
-
+            else
+            {
+                _currentLanguage = MirraSDK.Language.Current;
+            }
+          
             switch (_currentLanguage)
             {
                 case LanguageType.Russian:
@@ -48,9 +55,6 @@ namespace Assets._scripts
                     break;
                 default: _currentLanguage = LanguageType.English; break;
             }
-        }
-        private void Start()
-        {            
             SetLanguage(_currentLanguage);
         }
         private void InitializeLocalizations()
@@ -246,7 +250,7 @@ namespace Assets._scripts
             }
             else
             {
-                _currentLanguage = LanguageType.English;
+                _currentLanguage = LanguageType.Russian;
             }
             MirraSDK.Language.Current = _currentLanguage;
             MirraSDK.Data.SetObject("language", MirraSDK.Language.Current);

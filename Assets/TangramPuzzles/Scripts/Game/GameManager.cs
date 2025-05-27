@@ -393,11 +393,16 @@ namespace BizzyBeeGames.TangramPuzzles
 				toRewardProgress++;
 				CurrencyManager.Instance.Give("stars", 1);
 				MirraSDK.Socials.SetScore("score", CurrencyManager.Instance.GetAmount("stars"));
-                YandexMetrica.Send("level_complete", new Dictionary<string, string>
+				MirraSDK.Analytics.Report("level_complete", new Dictionary<string, object>
+                {
+                    { "pack", ActiveLevelData.PackId },
+                    { "level", ActiveLevelData.Id },
+                });
+               /* YandexMetrica.Send("level_complete", new Dictionary<string, string>
 				{
 					{ "pack", ActiveLevelData.PackId },
 					{ "level", ActiveLevelData.Id },
-                });
+                });*/
             }
 
 			// If the player completed enough levels to earn

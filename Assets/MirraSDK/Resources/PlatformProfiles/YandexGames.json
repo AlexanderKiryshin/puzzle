@@ -8,7 +8,7 @@
         "adsProvider": "",
         "rewardsProvider": ""
     },
-    "overrideAnalyticsSettings": true,
+    "overrideAnalyticsSettings": false,
     "customAnalyticsSettings": {
         "eventsReporterProvider": "",
         "gameplayReporterProvider": ""
