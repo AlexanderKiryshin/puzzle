@@ -44,18 +44,16 @@ public class AdManager : MonoBehaviour
     {
         return MirraSDK.Ads.IsRewardedReady;
     }
-    public void StartRewarded(string progress, string placement, Action OnRewarded, Action OnNonReady)
+    public void StartRewarded(string progress, string placement, Action OnRewarded)
     {
         this.placement = placement;
         this.progress = progress;
         this.onRewarded = OnRewarded;
-        _test.text = "reward 0";
-        // MirraSDK.Time.Scale = 0;
         time = 0;
-        MirraSDK.Ads.InvokeRewarded(this.OnRewarded, onOpen, OnNonReady, OnCloseMethod);
+        MirraSDK.Ads.InvokeRewarded(this.OnRewarded, OnOpen, OnCloseMethod);
         Analytic.RewardedStarted(progress, placement);
     }
-    private void onOpen()
+    private void OnOpen()
     {
 
     }
@@ -141,7 +139,6 @@ public class AdManager : MonoBehaviour
     }
     private void OnInterstitialClose()
     {
-        _test.text = "inter 1";
         _interstitialCanvas.alpha = 0;
         _interstitialCanvas.blocksRaycasts = false;
         Debug.Log("closed");

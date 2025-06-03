@@ -1,7 +1,10 @@
-﻿using MirraGames.SDK;
+﻿using BizzyBeeGames.TangramPuzzles;
+using BizzyBeeGames;
+using MirraGames.SDK;
 using MirraGames.SDK.Common;
 using System;
 using System.Buffers.Text;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
@@ -12,8 +15,11 @@ using UnityEngine;
 
 namespace Assets._scripts
 {
-    public class LocalizationManager:MonoBehaviour
+    public class LocalizationManager : MonoBehaviour
     {
+        [SerializeField] BundleScreen _bundleScreen;
+        [SerializeField] TopBar _topBar;
+        [SerializeField] LevelListScreen _levelListScreen;
         private Dictionary<LanguageType, Dictionary<string, string>> _localizations;
         private LanguageType _currentLanguage;
         public Action onLanguageChange;
@@ -32,20 +38,19 @@ namespace Assets._scripts
         private void Awake()
         {
             InitializeLocalizations();
-          
+
         }
         private void Start()
         {
-            if (MirraSDK.Data.HasKey("language"))
-            {
-                MirraSDK.Language.Current = MirraSDK.Data.GetObject<LanguageType>("language");
-                _currentLanguage = MirraSDK.Language.Current;
-            }
-            else
-            {
-                _currentLanguage = MirraSDK.Language.Current;
-            }
-          
+            StartCoroutine(SetLanguageRoutine());
+        }
+
+        private IEnumerator SetLanguageRoutine()
+        {
+            yield return new WaitUntil(() => MirraSDK.IsInitialized);
+            _currentLanguage = MirraSDK.Language.Current;
+            //_currentLanguage=LanguageType.English; // Default to English if not set
+
             switch (_currentLanguage)
             {
                 case LanguageType.Russian:
@@ -70,13 +75,13 @@ namespace Assets._scripts
                     ["failed"] = "Failed!",
                     ["ads"] = "COFFEE BREAK IN ",
                     ["bundles"] = "BUNDLES",
-                    ["main"]="MAIN",
+                    ["main"] = "MAIN",
                     ["additional"] = "ADDITIONAL",
-                    ["BEGINNER"]= "BEGINNER",
-                    ["EASY"]="EASY",
-                    ["MEDIUM"] = "MEDIUM",                   
-                    ["HARD"]= "HARD",
-                    ["EXPERT"]= "EXPERT",
+                    ["BEGINNER"] = "BEGINNER",
+                    ["EASY"] = "EASY",
+                    ["MEDIUM"] = "MEDIUM",
+                    ["HARD"] = "HARD",
+                    ["EXPERT"] = "EXPERT",
                     ["GURU 1"] = "GURU 1",
                     ["GURU 2"] = "GURU 2",
                     ["GURU 3"] = "GURU 3",
@@ -100,13 +105,14 @@ namespace Assets._scripts
                     ["not_enough_cups_description"] = "You don't have enough cups to play this pack. Complete levels in other packs to get more cups!",
                     ["free_coins_award"] = "You have been awarded free coins!",
                     ["leaderboard"] = "LEADERBOARD",
+                    ["watch_ad"] = "Watch ad"
                 },
                 [LanguageType.Russian] = new Dictionary<string, string>
                 {
                     ["level"] = "УРОВЕНЬ {0}",
                     ["continue"] = "Продолжить?",
                     ["restart"] = "Заново",
-                    ["complete"] = "Пройден", 
+                    ["complete"] = "Пройден",
                     ["failed"] = "Провал!",
                     ["main"] = "ОСНОВНОЙ",
                     ["ads"] = "КОФЕ БРЕЙК ЧЕРЕЗ ",
@@ -140,6 +146,7 @@ namespace Assets._scripts
                     ["not_enough_cups_description"] = "У вас недостаточно кубков, чтобы сыграть в этот набор. Пройдите уровни в других наборах, чтобы получить больше кубков!",
                     ["free_coins_award"] = "Вам были выданы бесплатные монеты!",
                     ["leaderboard"] = "РЕЙТИНГ",
+                    ["watch_ad"] = "Смотреть рекламу",
                 },
                 [LanguageType.Turkish] = new Dictionary<string, string>
                 {
@@ -180,6 +187,7 @@ namespace Assets._scripts
                     ["not_enough_cups_description"] = "Bu paketi oynamak için yeterli kupanız yok. Daha fazla kupa kazanmak için diğer paketlerde seviyeleri tamamlayın!",
                     ["free_coins_award"] = "Ücretsiz jetonlarınız var!",
                     ["leaderboard"] = "LİDER TABLOSU",
+                    ["watch_ad"] = "Reklam izle"
                 },
                 [LanguageType.German] = new Dictionary<string, string>
                 {
@@ -220,6 +228,7 @@ namespace Assets._scripts
                     ["not_enough_cups_description"] = "Du hast nicht genug Tassen, um dieses Paket zu spielen. Schließe Level in anderen Packs ab, um mehr Tassen zu erhalten!",
                     ["free_coins_award"] = "Sie haben kostenlose Münzen erhalten!",
                     ["leaderboard"] = "RANGLISTE",
+                    ["watch_ad"] = "Werbung ansehen"
                 }
             };
         }
@@ -243,18 +252,22 @@ namespace Assets._scripts
 
         public void SetLanguage(LanguageType language)
         {
-            
+
             if (_localizations.ContainsKey(language))
             {
                 _currentLanguage = language;
             }
-            else
+
+            switch (ScreenManager.Instance.CurrentScreenId)
             {
-                _currentLanguage = LanguageType.Russian;
+                case "bundles":
+                    _bundleScreen.UpdateUI(false);
+                    break;
+                case "pack_levels":
+                    _levelListScreen.UpdateList();
+                    break;
             }
-            MirraSDK.Language.Current = _currentLanguage;
-            MirraSDK.Data.SetObject("language", MirraSDK.Language.Current);
-            MirraSDK.Data.Save();
+            _topBar.UpdateHeaderName();
             onLanguageChange?.Invoke();
         }
 

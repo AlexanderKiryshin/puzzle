@@ -5,8 +5,7 @@
     },
     "overrideAdsSettings": false,
     "customAdsSettings": {
-        "adsProvider": "",
-        "rewardsProvider": ""
+        "adsProvider": ""
     },
     "overrideAnalyticsSettings": false,
     "customAnalyticsSettings": {
@@ -37,8 +36,7 @@
     },
     "overridePaymentsSettings": false,
     "customPaymentsSettings": {
-        "paymentsProvider": "",
-        "productsProvider": ""
+        "paymentsProvider": ""
     },
     "overridePlatformSettings": false,
     "customPlatformSettings": {
@@ -69,5 +67,6 @@
     "overridePauseSettings": false,
     "customPauseSettings": {
         "pauseProvider": ""
-    }
+    },
+    "readUserToken": false
 }

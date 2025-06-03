@@ -36,19 +36,12 @@
       "dependencies": {},
       "hash": "dbd76ed996483d219c39d240f785b1790aa039ed"
     },
-    "com.mirrasdk.adsense": {
-      "version": "git@github.com:MirraSDK/AdSense.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "d68e83ebc0677974868b44f2d052fa8ddd99c427"
-    },
     "com.romanlee17.mirrasdk": {
       "version": "git@github.com:MirraSDK/SDK.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "5db761b38b2b31d679762c2ffcd2fb3d574c3037"
+      "hash": "8bbd24cd7f0759162ddbc5b4077248bab3b89ccd"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

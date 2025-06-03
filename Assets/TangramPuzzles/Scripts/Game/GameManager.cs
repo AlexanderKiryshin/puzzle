@@ -392,17 +392,17 @@ namespace BizzyBeeGames.TangramPuzzles
 				NumLevelsCompleted++;
 				toRewardProgress++;
 				CurrencyManager.Instance.Give("stars", 1);
-				MirraSDK.Socials.SetScore("score", CurrencyManager.Instance.GetAmount("stars"));
+				MirraSDK.Achievements.SetScore("score", CurrencyManager.Instance.GetAmount("stars"));
 				MirraSDK.Analytics.Report("level_complete", new Dictionary<string, object>
                 {
                     { "pack", ActiveLevelData.PackId },
                     { "level", ActiveLevelData.Id },
                 });
-               /* YandexMetrica.Send("level_complete", new Dictionary<string, string>
+                YandexMetrica.Send("level_complete", new Dictionary<string, string>
 				{
 					{ "pack", ActiveLevelData.PackId },
 					{ "level", ActiveLevelData.Id },
-                });*/
+                });
             }
 
 			// If the player completed enough levels to earn
@@ -435,9 +435,9 @@ namespace BizzyBeeGames.TangramPuzzles
 
 			// Show the level completed popup
 			PopupManager.Instance.Show("level_complete", popupData, OnLevelCompletePopupClosed);
-
-			// Send an active level completed game event 
-			GameEventManager.Instance.SendEvent(GameEventManager.ActiveLevelCompletedEventId);
+		
+            // Send an active level completed game event 
+            GameEventManager.Instance.SendEvent(GameEventManager.ActiveLevelCompletedEventId);
             SaveManager.Instance.Save();
         }
 

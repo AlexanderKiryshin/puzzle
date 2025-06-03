@@ -11,6 +11,12 @@ public class PlaytimeCounter : MonoBehaviour
     public static Action<float> playtimeChanged;
     void Start()
     {
+        StartCoroutine(SetPlaytime());
+    }
+
+    private IEnumerator SetPlaytime()
+    {
+        yield return new WaitUntil(() => MirraSDK.IsInitialized);        
         MirraSDK.Data.SetFloat("session_playtime", 0);
         if (MirraSDK.Data.HasKey("playtime"))
         {
@@ -18,9 +24,9 @@ public class PlaytimeCounter : MonoBehaviour
         }
         else
         {
-            MirraSDK.Data.SetFloat("playtime",0);
+            MirraSDK.Data.SetFloat("playtime", 0);
         }
-        
+
         MirraSDK.Data.Save();
         StartCoroutine(TimeCounter());
     }

@@ -12,7 +12,7 @@ namespace YG
         {
 #if UNITY_EDITOR
             SendEditor(eventName, string.Empty);
-#elif YANDEX_METRICA
+#else
             YandexMetricaSend(eventName, string.Empty);
 #endif
         }
@@ -43,6 +43,10 @@ namespace YG
 #if UNITY_EDITOR
         private static void SendEditor(string eventName, string eventParams)
         {
+            InfoYG infoYG = ConfigYG.GetInfoYG();
+
+            if (infoYG.metricaEnable && infoYG.debug)
+            {
                 if (string.IsNullOrEmpty(eventParams))
                 {
                     Debug.Log($"<color=green>YandexMetrica</color>: {eventName}");
@@ -50,7 +54,7 @@ namespace YG
                 }
 
                 Debug.Log($"<color=green>YandexMetrica</color>: {eventName}; {eventParams}");
-            
+            }
         }
 #endif
 
@@ -58,8 +62,8 @@ namespace YG
         private static extern bool YandexMetricaSendInternal(string eventName, string eventData);
 
         private static void YandexMetricaSend(string eventName, string eventData)
-        {
-            YandexMetricaSendInternal(eventName, eventData);           
+        {           
+            YandexMetricaSendInternal(eventName, eventData);          
         }
     }
 }

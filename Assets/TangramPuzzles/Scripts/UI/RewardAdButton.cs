@@ -33,12 +33,12 @@ namespace BizzyBeeGames.TangramPuzzles
         void Rewarded(int id)
         {
 			if (id == 0)
-				OnRewardAdGranted("", 0);
+				OnRewardAdGranted();
         }
 
         private void Start()
 		{
-			uiContainer.SetActive(false);
+			
 			UpdateUI();
 			CurrencyManager.Instance.OnCurrencyChanged	+= OnCurrencyChanged;
 
@@ -59,14 +59,14 @@ namespace BizzyBeeGames.TangramPuzzles
 
 		private void UpdateUI()
 		{
-			uiContainer.SetActive(true);
+			
 		}
 
 		private void OnAdsRemoved()
 		{
 			CurrencyManager.Instance.OnCurrencyChanged	-= OnCurrencyChanged;
 
-			uiContainer.SetActive(false);
+			
 		}
 
 		private void OnClicked()
@@ -74,12 +74,11 @@ namespace BizzyBeeGames.TangramPuzzles
 			/*#if UNITY_EDITOR
 			if (testInEditor)
 			{
-				OnRewardAdGranted("", 0);
-
+				OnRewardAdGranted();
 				return;
 			}
 			#endif*/
-			AdManager.instance.StartRewarded("_", "reward_ad_button", OnRewarded, OnNonReady);
+			AdManager.instance.StartRewarded("_", "reward_ad_button", OnRewardAdGranted);
 		}
 
 		private void OnRewarded()
@@ -91,7 +90,7 @@ namespace BizzyBeeGames.TangramPuzzles
 		{
 
 		}
-		private void OnRewardAdGranted(string id, double amount)
+		private void OnRewardAdGranted()
 		{
 			// Increment the currency right now
 			CurrencyManager.Instance.Give(currencyId, amountToReward);

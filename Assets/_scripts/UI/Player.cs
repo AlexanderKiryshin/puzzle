@@ -16,7 +16,9 @@ namespace Assets._scripts.UI
         [SerializeField] private Color _firstPlaceColor;
         [SerializeField] private Color _secondPlaceColor;
         [SerializeField] private Color _thirdPlaceColor;
+        [SerializeField] private Color _playerColor;
         [SerializeField] private Color _defaultColor;
+        [SerializeField] private Sprite _playerImage;
         [SerializeField] private Sprite _firstPlaceImage;
         [SerializeField] private Sprite _secondPlaceImage;
         [SerializeField] private Sprite _thirdPlaceImage;
@@ -37,7 +39,7 @@ namespace Assets._scripts.UI
                 targetImage.texture = texture;
             }
         }
-        public void SetStatistic(int position,string name, int score,string url)
+        public void SetStatistic(int position,string name, int score,string url,bool isPlayer)
         {
             _position.text = position.ToString();
             _name.text = name;
@@ -60,6 +62,11 @@ namespace Assets._scripts.UI
                     _background.color = _defaultColor;
                     _background.sprite = _defaultImage;
                     break;
+            }
+            if (isPlayer)
+            {
+                _background.color = _playerColor;
+                _background.sprite = _playerImage;
             }
             _name.text = name;
             _score.text = score.ToString();
